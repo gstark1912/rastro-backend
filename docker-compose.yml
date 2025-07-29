@@ -1,0 +1,24 @@
+﻿version: '3.8'
+
+services:
+  rastro-mongo:
+    image: mongo:latest
+    container_name: rastro-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - rastro-network
+
+networks:
+  rastro-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
