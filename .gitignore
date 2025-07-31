@@ -6,6 +6,7 @@ obj/
 node_modules/
 
 # === VS Code ===
+.vs/
 .vscode/
 .vscode/*
 

@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RastroApi.Models;
-using RastroApi.Services;
 
 namespace RastroApi.Controllers;
 
