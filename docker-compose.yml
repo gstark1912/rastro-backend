@@ -1,24 +1,31 @@
-﻿version: '3.8'
-
-services:
-  rastro-mongo:
-    image: mongo:latest
+﻿services:
+  mongo:
+    image: mongo:6.0
     container_name: rastro-mongo
-    restart: unless-stopped
     ports:
-      - "27017:27017"
+      - "27028:27017"
     volumes:
-      - ./mongo:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - mongo-data:/data/db
     networks:
-      - rastro-network
+      - rastro-net
 
-networks:
-  rastro-network:
-    driver: bridge
+  rastro-api:
+    build:
+      context: ./api
+      dockerfile: RastroApi/Dockerfile
+    container_name: rastro-api
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Mongo=mongodb://rastro-mongo:27017
+    depends_on:
+      - mongo
+    networks:
+      - rastro-net
 
 volumes:
   mongo-data:
-    driver: local
+
+networks:
+  rastro-net:

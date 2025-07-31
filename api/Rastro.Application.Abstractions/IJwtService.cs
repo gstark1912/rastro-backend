@@ -2,8 +2,8 @@
 
 namespace Rastro.Application.Abstractions
 {
-    public interface IAuthService
+    public interface IJwtService
     {
-        Task<string> LoginAsync(User request);
+        string GenerateToken(User user);
     }
 }
