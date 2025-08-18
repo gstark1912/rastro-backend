@@ -14,9 +14,12 @@ namespace Rastro.Infrastructure
         }
 
         public async Task<User?> GetByEmailAsync(string email) =>
-            (await _collection.FindAsync(u => u.Email == email)).FirstOrDefault();
+            await _collection.Find(u => u.Email == email).FirstOrDefaultAsync();
 
-        public Task CreateAsync(User user) =>
-            _collection.InsertOneAsync(user);
+        public async Task<User> CreateAsync(User user)
+        {
+            await _collection.InsertOneAsync(user);
+            return user;
+        }
     }
 }

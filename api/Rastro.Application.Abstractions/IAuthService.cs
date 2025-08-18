@@ -1,9 +1,11 @@
-﻿using Rastro.Domain;
+﻿using Rastro.Application.Contracts.Auth;
+using Rastro.Domain;
 
 namespace Rastro.Application.Abstractions
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(User request);
+        Task<AuthResponse> RegisterAsync(RegisterRequest request);
+        Task<AuthResponse> LoginAsync(LoginRequest request);
     }
 }

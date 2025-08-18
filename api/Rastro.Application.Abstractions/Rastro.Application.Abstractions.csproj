@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rastro.Contracts\Rastro.Contracts.csproj" />
     <ProjectReference Include="..\Rastro.Domain\Rastro.Domain.csproj" />
     <ProjectReference Include="..\Rastro.Infrastructure.Abstractions\Rastro.Infrastructure.Abstractions.csproj" />
   </ItemGroup>

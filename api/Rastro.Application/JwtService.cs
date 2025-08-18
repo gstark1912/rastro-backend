@@ -10,31 +10,42 @@ namespace Rastro.Application
 {
     public class JwtService : IJwtService
     {
-        private readonly string _key;
         private readonly string _issuer;
+        private readonly string _audience;
+        private readonly string _key;        // from config
+        private readonly TimeSpan _ttl;      // e.g. 15 minutes
 
-        public JwtService(IConfiguration config)
+        public JwtService(IConfiguration cfg)
         {
-            _key = config["Jwt:Key"];
-            _issuer = config["Jwt:Issuer"];
+            _issuer = cfg["Jwt:Issuer"]!;
+            _audience = cfg["Jwt:Audience"]!;
+            _key = cfg["Jwt:Key"]!;
+            _ttl = TimeSpan.FromDays(int.Parse(cfg["Jwt:AccessTokenMinutes"] ?? "15"));
         }
 
         public string GenerateToken(User user)
         {
+            var now = DateTime.UtcNow;
             var claims = new[]
             {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("email_verified", user.EmailVerified ? "true" : "false"),
+                new Claim(JwtRegisteredClaimNames.Iat, 
+                        new DateTimeOffset(now).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+            };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
+                SecurityAlgorithms.HmacSha256
+            );
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,
-                audience: _issuer,
+                audience: _audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(6),
+                notBefore: now,
+                expires: now.Add(_ttl),
                 signingCredentials: creds
             );
 
