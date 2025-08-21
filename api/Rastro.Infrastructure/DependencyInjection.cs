@@ -2,6 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Rastro.Infrastructure.Abstractions;
+using Rastro.Domain;
+using RastroApi.Domain.Common;
+using RastroApi.Infrastructure.Mongo;
 
 namespace Rastro.Infrastructure
 {
@@ -10,6 +13,7 @@ namespace Rastro.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRepository<Project>, Repository<Project>>();
 
             services.AddSingleton<IMongoClient>(sp =>
                 new MongoClient(config.GetConnectionString("Server")));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rastro.Application.Abstractions;
+using Rastro.Domain;
 
 namespace Rastro.Application
 {
@@ -10,7 +11,7 @@ namespace Rastro.Application
         {
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
-
+            services.AddScoped<IUserScopedCrudService<Project>, UserScopedCrudService<Project>>();
             return services;
         }
     }

@@ -6,16 +6,13 @@ namespace RastroApi.Controllers
 {
     [ApiController]
     [Route("dummy")]
-    public class DummyController : ControllerBase
+    public class DummyController : RastroControllerBase
     {
         [HttpGet("hello")]
         [Authorize] // <- requiere token válido
         public IActionResult Hello()
         {
-            // Podés acceder a claims del usuario:
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
-            var all = User.Claims.Select(c => new { c.Type, c.Value });
-
+            var email = this.UserEmail;
             return Ok(new { Message = $"Hola {email}, tu token funciona 🚀" });            
         }
     }
