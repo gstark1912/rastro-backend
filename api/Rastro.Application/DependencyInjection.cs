@@ -12,6 +12,7 @@ namespace Rastro.Application
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserScopedCrudService<Project>, UserScopedCrudService<Project>>();
+            services.AddScoped<IUserScopedCrudService<Marker>, UserScopedCrudService<Marker>>();
             return services;
         }
     }

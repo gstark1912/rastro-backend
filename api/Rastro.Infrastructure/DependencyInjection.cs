@@ -14,6 +14,7 @@ namespace Rastro.Infrastructure
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRepository<Project>, Repository<Project>>();
+            services.AddScoped<IRepository<Marker>, Repository<Marker>>();
 
             services.AddSingleton<IMongoClient>(sp =>
                 new MongoClient(config.GetConnectionString("Server")));

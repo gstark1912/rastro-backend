@@ -9,14 +9,14 @@ public abstract class RastroControllerBase : ControllerBase
     /// <summary>
     /// Returns the user's email from claims, trying common claim types.
     /// </summary>
-    protected string? UserEmail =>
+    protected string UserEmail =>
         User.GetFirstClaimValue(ClaimTypes.Email) ??
         User.GetFirstClaimValue("email"); // JWT standard
 
     /// <summary>
     /// Returns the user's id (subject) from claims, trying common claim types.
     /// </summary>
-    protected string? UserId =>
+    protected string UserId =>
         User.GetFirstClaimValue(ClaimTypes.NameIdentifier) ??
         User.GetFirstClaimValue("sub"); // JWT standard
 
@@ -41,6 +41,6 @@ public static class ClaimsPrincipalExtensions
     /// <summary>
     /// Gets the first claim value for a given type or null.
     /// </summary>
-    public static string? GetFirstClaimValue(this ClaimsPrincipal principal, string claimType)
-        => principal?.FindFirst(claimType)?.Value;
+    public static string GetFirstClaimValue(this ClaimsPrincipal principal, string claimType)
+        => principal?.FindFirst(claimType)?.Value ?? string.Empty;
 }
