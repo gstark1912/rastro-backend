@@ -12,10 +12,13 @@ namespace RastroApi.Controllers;
 public class MarkersController : RastroControllerBase
 {
     private readonly IUserScopedCrudService<Marker> _service;
+    private readonly IUserScopedCrudService<Project> _projectService;
 
-    public MarkersController(IUserScopedCrudService<Marker> service)
+    public MarkersController(IUserScopedCrudService<Marker> service,
+        IUserScopedCrudService<Project> projectService)
     {
         _service = service;
+        _projectService = projectService;
     }
 
     // GET: api/projects/{projectId}/markers
@@ -42,8 +45,8 @@ public class MarkersController : RastroControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(string projectId, [FromBody] Marker marker, CancellationToken ct)
     {
-        //if (!ModelState.IsValid)
-        //return BadRequest(ModelState);
+        if (await _projectService.GetAsync(projectId, this.UserId, ct) == null)
+            return NotFound("Project not found");
 
         marker.Id = ObjectId.GenerateNewId().ToString();
         marker.IsActive = true;
