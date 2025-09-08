@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Rastro.Application.Abstractions;
 using Rastro.Application.Contracts.Auth;
 
@@ -36,6 +39,25 @@ namespace RastroApi.Controllers
         {
             var response = await _auth.RegisterAsync(request);
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Returns info about the current logged-in user, based on JWT claims.
+        /// </summary>
+        [HttpGet("me")]
+        [Authorize] // requiere un JWT válido
+        public IActionResult Me()
+        {
+            var user = new
+            {
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub),
+                Email = User.FindFirstValue(ClaimTypes.Email) ?? User.FindFirstValue(JwtRegisteredClaimNames.Email),
+                DisplayName = User.FindFirstValue("name") ?? User.FindFirstValue("displayName"),
+                // Si guardaste otros claims (roles, etc.)
+                Roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList()
+            };
+
+            return Ok(user);
         }
     }
 }

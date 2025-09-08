@@ -18,7 +18,7 @@
       - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Mongo=mongodb://rastro-mongo:27017
+      - ConnectionStrings__Server=mongodb://rastro-mongo:27017
       - ASPNETCORE_URLS=http://0.0.0.0:8080
     depends_on:
       - mongo

@@ -30,8 +30,9 @@ namespace Rastro.Application
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Name, user.DisplayName),
                 new Claim("email_verified", user.EmailVerified ? "true" : "false"),
-                new Claim(JwtRegisteredClaimNames.Iat, 
+                new Claim(JwtRegisteredClaimNames.Iat,
                         new DateTimeOffset(now).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             };
 
