@@ -15,7 +15,7 @@
       dockerfile: RastroApi/Dockerfile
     container_name: rastro-api
     ports:
-      - "5000:80"
+      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Mongo=mongodb://rastro-mongo:27017
